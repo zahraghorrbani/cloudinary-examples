@@ -1,5 +1,12 @@
-import { Cloudinary } from '@cloudinary/url-gen';
+import { Cloudinary, Transformation } from '@cloudinary/url-gen';
 import { AdvancedImage, lazyload, placeholder } from '@cloudinary/react';
+import { fill, scale } from "@cloudinary/url-gen/actions/resize";
+import { source } from "@cloudinary/url-gen/actions/overlay";
+import { image, text } from "@cloudinary/url-gen/qualifiers/source";
+import { Position } from "@cloudinary/url-gen/qualifiers/position";
+import { compass } from "@cloudinary/url-gen/qualifiers/gravity";
+import { TextStyle } from "@cloudinary/url-gen/qualifiers/textStyle";
+import { opacity } from "@cloudinary/url-gen/actions/adjust";
 
 import './App.css';
 
@@ -70,7 +77,67 @@ function App() {
                   height={image.height}
                   cldImg={cld.image(image.image).delivery('q_auto').format('auto')}
                   alt={image.title}
-                  plugins={[ lazyload(), placeholder() ]}
+                  plugins={[lazyload(), placeholder()]}
+                />
+              </li>
+            )
+          })}
+        </ul>
+      </div>
+
+      <div className="container">
+        <h2>Watermarks</h2>
+        <p>Add watermarks to your images.</p>
+        <ul className="images">
+          {images.map(watermarkImage => {
+            return (
+              <li key={watermarkImage.id}>
+                <AdvancedImage
+                  width={watermarkImage.width}
+                  height={watermarkImage.height}
+                  cldImg={
+                    cld.image(watermarkImage.image)
+                      .resize(fill(300, 300))
+                      .overlay(
+                        source(
+                          image('examples/cloudinary-logo-blue_ulaqws')
+                            .transformation(new Transformation()
+                              .resize(scale().width(200))
+                            )
+                        )
+                          .position(new Position().gravity(compass('south_east')))
+                      )
+                      .delivery('q_auto').format('auto')
+                  }
+                  alt={watermarkImage.title}
+                  plugins={[lazyload(), placeholder()]}
+                />
+              </li>
+            )
+          })}
+        </ul>
+        <ul className="images">
+          {images.map(watermarkImage => {
+            return (
+              <li key={watermarkImage.id}>
+                <AdvancedImage
+                  width={watermarkImage.width}
+                  height={watermarkImage.height}
+                  cldImg={
+                    cld.image(watermarkImage.image)
+                      .resize(fill(300, 300))
+                      .overlay(
+                        source(
+                          text('PREVIEW', new TextStyle('arial', 60)
+                            .fontWeight('bold'))
+                            .textColor('gray')
+                            .transformation(new Transformation().adjust(opacity(70)))
+                        )
+                      )
+                      .delivery('q_auto').format('auto')
+                  }
+                  alt={watermarkImage.title}
+                  plugins={[lazyload(), placeholder()]}
                 />
               </li>
             )
@@ -87,7 +154,7 @@ function App() {
           {images.map(image => {
             return (
               <li key={image.id}>
-                { image.title }: <a href={image.link} rel="noreferrer">{image.link}</a>
+                {image.title}: <a href={image.link} rel="noreferrer">{image.link}</a>
               </li>
             )
           })}

@@ -1,4 +1,4 @@
-# Uploadinag Images to Cloudinary with the Node SDK
+# Uploading Images to Cloudinary with the Node SDK
 
 ## 🧰 Uploading with the SDK in a Node project
 
@@ -46,10 +46,10 @@ npm install
 node <filename>
 ```
 
-For example, inside the `examples/node-social-media-card` directory:
+For example, inside the `examples/node-video-upload` directory:
 
 ```
-node social-media-card.js
+node upload.js
 ```
 
 The script will run in your terminal and you'll see the URL results logged.
